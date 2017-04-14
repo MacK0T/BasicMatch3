@@ -1,40 +1,37 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class RandomManager : MonoBehaviour
 {
     [SerializeField]
-    private string seed = "";
+    private int seed = 0;
 
-    public string getSeed
+    public int getSeed
     {
         get
         {
             return seed;
         }
     }
-
-    private static System.Random random = new System.Random();
-    private string GenerateNewSeed(int lenght)
+    
+    private int GenerateNewSeed(int maxSeed)
     {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        return new string(Enumerable.Repeat(chars, lenght)
-          .Select(s => s[random.Next(s.Length)]).ToArray());
+        Random.seed = Random.Range(0, maxSeed);
+        return Random.seed;
     }
 
-    public void GetRandowJewel()
+    public int GetRandowJewel(int maxLenght)
     {
-
+        return Random.Range(0, maxLenght);
     }
 
 
     private void Awake()
     {
-        if (seed == "")
+        if (seed == 0)
         {
-            seed = GenerateNewSeed(8);
+            seed = GenerateNewSeed(1000000);
         }
     }
 }

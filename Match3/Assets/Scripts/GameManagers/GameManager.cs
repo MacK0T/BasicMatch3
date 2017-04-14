@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
                 int jewelColor;
                 do
                 {
-                    jewelColor = Random.Range(0, basicJewels.Length);
+                    jewelColor = _randomManager.GetRandowJewel(basicJewels.Length);
                     if (x >= 2)
                     {
                         notSameColorX = (fieldData[x - 1, y].type != jewelColor)
@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
 
     public string[] GetState()
     {
-        string[] temp = { _randomManager.getSeed };
+        string[] temp = { _randomManager.getSeed.ToString() };
 
         return temp;
     }
