@@ -1,48 +1,52 @@
 ﻿using UnityEngine;
 
-public abstract class SceneSingleton<T> : MonoBehaviour where T : SceneSingleton<T>
+public class SceneSingleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    private static T m_Instance = null;
-    public static T instance
+    private static T _instance;
+    
+    //private static object _lock = new object();
+
+
+
+    public static T Instance
     {
         get
         {
-            // Instance requiered for the first time, we look for it
-            if (m_Instance == null)
+            if (applicationIsQuitting)
             {
-                m_Instance = GameObject.FindObjectOfType(typeof(T)) as T;
-
-                // Object not found, we create a temporary one
-                if (m_Instance == null)
-                {
-                    Debug.LogWarning("No instance of " + typeof(T).ToString() + ", a temporary one is created.");
-                    m_Instance = new GameObject("Temp Instance of " + typeof(T).ToString(), typeof(T)).GetComponent<T>();
-
-                    // Problem during the creation, this should not happen
-                    if (m_Instance == null)
-                    {
-                        Debug.LogError("Problem during the creation of " + typeof(T).ToString());
-                    }
-                }
-                m_Instance.Init();
+                return null;
             }
-            return m_Instance;
+
+            //lock (_lock)
+            {
+
+                return _instance;
+            }
         }
     }
 
-    private void Awake()
+    protected void Awake()
     {
-        if (m_Instance == null)
+        if (_instance == null)
         {
-            m_Instance = this as T;
-            m_Instance.Init();
+            _instance = GetComponent<T>();
+            _instance.gameObject.name = "(singleton) " + typeof(T).ToString();            
         }
     }
-    
-    public virtual void Init() { }
-    
-    private void OnDestroy()
+
+    private static bool applicationIsQuitting = false;
+    /// <summary>
+    /// When Unity quits, it destroys objects in a random order.
+    /// In principle, a Singleton is only destroyed when application quits.
+    /// If any script calls Instance after it have been destroyed, 
+    ///   it will create a buggy ghost object that will stay on the Editor scene
+    ///   even after stopping playing the Application. Really bad!
+    /// So, this was made to be sure we're not creating that buggy ghost object.
+    /// </summary>
+    public void OnDestroy()
     {
-        m_Instance = null;
+        applicationIsQuitting = true;
     }
+
+
 }
