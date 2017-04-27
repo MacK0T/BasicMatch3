@@ -17,11 +17,11 @@ public class RandomManager : MonoBehaviour
     
     private int GenerateNewSeed(int maxSeed)
     {
-        Random.seed = Random.Range(0, maxSeed);
+        Random.InitState(Random.Range(0, maxSeed));
         return Random.seed;
     }
 
-    public int GetRandowJewel(int maxLenght)
+    public int GetRandowValue(int maxLenght)
     {
         return Random.Range(0, maxLenght);
     }

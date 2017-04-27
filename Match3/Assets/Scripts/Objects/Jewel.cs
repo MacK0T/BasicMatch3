@@ -16,7 +16,6 @@ public class Jewel : MonoBehaviour
     private Vector3 _offset;
     private Vector3 _startPosition;
 
-
     public int type
     {
         get
@@ -197,5 +196,11 @@ public class Jewel : MonoBehaviour
             transform.position = curPosition;
         }
         */
+    }
+
+    public IEnumerator DestroyWithAnimation()
+    {
+        yield return new WaitForSeconds(0.5f);
+        Destroy(this.gameObject);
     }
 }
