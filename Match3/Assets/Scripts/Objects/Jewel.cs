@@ -6,10 +6,12 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class Jewel : MonoBehaviour
 {
+    /*
     private bool _canMoveRight = false;
     private bool _canMoveLeft = false;
     private bool _canMoveTop = false;
     private bool _canMoveBottom = false;
+    */
     private int _type;
     private Field _fm;
     private Vector3 _screenPoint;

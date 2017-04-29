@@ -10,15 +10,19 @@ public class Field : MonoBehaviour
     [SerializeField]
     private int _fieldRows;
     [SerializeField]
+    private int _pointsPerJewel;
+    [SerializeField]
+    private int _maxTurns;
+    [SerializeField]
     private GameObject _jewelPrefab;
     [SerializeField]
     private Sprite[] _basicJewels;
     [SerializeField]
-    private int _pointsPerJewel;
-    [SerializeField]
     private float _swapTime;
     [SerializeField]
     private Text _pointsUI;
+    [SerializeField]
+    private Text _turnsUI;
 
     private Point _selectedJewel = new Point(-1, -1);
 
@@ -81,6 +85,7 @@ public class Field : MonoBehaviour
 
     private IEnumerator SwapJewels(Point firstJewel, Point secondJewel)
     {
+        _maxTurns--;
         StartCoroutine(MoveJewel(fieldData[firstJewel.x, firstJewel.y], secondJewel));
         yield return StartCoroutine(MoveJewel(fieldData[secondJewel.x, secondJewel.y], firstJewel));
         
@@ -147,28 +152,28 @@ public class Field : MonoBehaviour
 
         // top
         int maxY = position.y + 1;
-        while (maxY < _fieldColumns && IsSameType(type, position.x, maxY))
+        while (IsSameType(type, position.x, maxY))
         {
             maxY++;
         }
         maxY--;
         // bot
         int minY = position.y - 1;
-        while (minY >= 0 && IsSameType(type, position.x, minY))
+        while (IsSameType(type, position.x, minY))
         {
             minY--;
         }
         minY++;
         // right
         int maxX = position.x + 1;
-        while (maxX < _fieldRows && IsSameType(type, maxX, position.y))
+        while (IsSameType(type, maxX, position.y))
         {
             maxX++;
         }
         maxX--;
         // left
         int minX = position.x - 1;
-        while (minX >= 0 && IsSameType(type, minX, position.y))
+        while (IsSameType(type, minX, position.y))
         {
             minX--;
         }
